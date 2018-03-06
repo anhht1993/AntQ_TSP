@@ -21,21 +21,15 @@ if __name__ == "__main__":
         num_iterations = 50
     else:
         num_ants = num_nodes
-        num_iterations = 50
+        num_iterations = 200
 
     try:
-        heu_mat = [[0 for x in range(len(cost_mat))] for y in range(len(cost_mat))]
         if num_nodes < len(cost_mat):
             cost_mat = cost_mat[0:num_nodes]
             for i in range(0, num_nodes):
                 cost_mat[i] = cost_mat[i][0:num_nodes]
 
-        for i in range(0, len(cost_mat)):
-            for j in range(0, len(cost_mat[i])):
-                if cost_mat[i][j] != 0:
-                    heu_mat[i][j] = 1 / (cost_mat[i][j])
-
-        graph = AntQGraph(heu_mat)
+        graph = AntQGraph(cost_mat)
         antQ = AntQ(num_ants, num_iterations, graph)
         antQ.run()
         best_path_vec = antQ.best_tour

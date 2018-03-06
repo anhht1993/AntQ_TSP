@@ -4,7 +4,7 @@ import numpy as np
 
 
 class Ant:
-    def __init__(self, id, ant_q, start_node, q0=0.9):
+    def __init__(self, id, ant_q, start_node, q0=0.7):
         self.id = id
         self.start_node = start_node
         nodes_map = {}
@@ -27,21 +27,24 @@ class Ant:
         q = random.random()
 
         if not self.end():
+            max_node, max_val = self.max_aq()
             if q <= self.q0:
                 print("Exploitation")
-                max_node, max_val = self.max_aq()
-                self.update_ant_q(max_node, max_val)
                 next_node = max_node
             else:
                 print("Exploration")
                 p = self.next_nodes_probabilities()
+                if not p:
+                    p = [1.0 / len(self.nodes_to_visit)] * len(self.nodes_to_visit)
+                    print("p[all] = %s" % p[0])
 
-                next_node = np.random.choice(self.nodes_to_visit, 1, p)[0]
-                print("next node: %s" % (next_node, ))
+                next_node = np.random.choice(self.nodes_to_visit, 1, replace=False, p=p)[0]
 
             if next_node == -1:
                 raise Exception("next_node < 0")
 
+            self.update_ant_q(next_node, max_val)
+            print("next node: %s" % (next_node, ))
             self.tour_len += self.ant_q.graph.distance(self.curr_node, next_node)
             self.tour.append(next_node)
             self.curr_node = next_node
@@ -63,10 +66,11 @@ class Ant:
         r = self.curr_node
         probabilities = []
         heu_sum = self.heuristic_sum()
-        for node in self.nodes_to_visit:
-            p = self.heuristic_val(r, node) / heu_sum
-            print("p[%s] = %s" % (node, p,))
-            probabilities.append(p)
+        if heu_sum != 0:
+            for node in self.nodes_to_visit:
+                p = self.heuristic_val(r, node) / heu_sum
+                print("p[%s] = %s" % (node, p,))
+                probabilities.append(p)
         return probabilities
 
     def max_aq(self):

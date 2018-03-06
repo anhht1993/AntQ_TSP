@@ -5,7 +5,7 @@ import numpy as np
 
 
 class AntQ:
-    def __init__(self, number_of_ants, num_of_iteration, graph, alpha=.5, gamma=1, delta=1, beta=0, w=10):
+    def __init__(self, number_of_ants, num_of_iteration, graph, alpha=.1, gamma=.3, delta=1, beta=2, w=10):
         self.number_of_ants = number_of_ants
         self.alpha = alpha
         self.gamma = gamma
