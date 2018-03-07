@@ -8,7 +8,7 @@ class Ant:
         self.id = id
         self.start_node = start_node
         nodes_map = {}
-        self.tour = []
+        self.tour = [self.start_node]
         self.curr_node = start_node
         self.q0 = q0
         self.ant_q = ant_q
@@ -52,6 +52,7 @@ class Ant:
 
         else:
             self.tour_len += self.ant_q.graph.distance(self.tour[-1], self.tour[0])
+
 
     def update_ant_q(self, next_node, max_val):
         r = self.curr_node

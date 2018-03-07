@@ -5,7 +5,7 @@ import numpy as np
 
 
 class AntQ:
-    def __init__(self, number_of_ants, num_of_iteration, graph, alpha=.1, gamma=.3, delta=1, beta=2, w=10):
+    def __init__(self, number_of_ants, num_of_iteration, graph, alpha=.3, gamma=.3, delta=2, beta=1, w=10):
         self.number_of_ants = number_of_ants
         self.alpha = alpha
         self.gamma = gamma
@@ -51,6 +51,7 @@ class AntQ:
         for i in range(0, self.num_of_iteration):
             print("Iteration[%s]" % i)
             self.create_ants()
+            print(self.ants[0].nodes_to_visit)
             for j in range(0, self.graph.num_node):
                 for ant in self.ants:
                     ant.move()
